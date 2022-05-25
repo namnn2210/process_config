@@ -11,7 +11,6 @@ from json_config.imps_config import IMPS_CONFIG
 IMPS_CLICK_HEADER = config.IMPS_CLICK_HEADER
 REQUESTS_HEADER = config.REQUESTS_HEADER
 
-
 dict_agg = {
 }
 
@@ -57,6 +56,7 @@ def do_agg(imps_file_path, clicks_file_path, action_name, hour):
         Session = sessionmaker(bind=engine)
         session = Session()
         table_obj = get_table_obj(table_name)
+        print("=====================", table_obj.__getattribute__('ad_id'))
         for index, row in select_imps_df.iterrows():
             exist_obj = session.query(table_obj).filter(
                 and_(table_obj.ad_id == row['ad_id'], table_obj.tag_id == row['tag_id'])).first()
@@ -64,6 +64,7 @@ def do_agg(imps_file_path, clicks_file_path, action_name, hour):
                 pass
             else:
                 obj = table_obj(ad_id=row['ad_id'], tag_id=row['tag_id'], imp=row['imp'],
-                                spent_cpm=row['spent_cpm'])
-                session.add(obj)
-                session.commit()
+                                spent_cpm=row['spent_cpm'], hour=hour)
+                print(obj)
+                # session.add(obj)
+                # session.commit()
