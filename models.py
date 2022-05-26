@@ -136,6 +136,7 @@ class StatsAdsTagsCampaignByNodeHour(Base):
 
 
 class StatsAdsTagsDateByNodeHour(Base):
+
     __tablename__ = "stats_ads_tags_date_by_node_hour"
 
     id = Column(Integer, primary_key=True, autoincrement="auto")

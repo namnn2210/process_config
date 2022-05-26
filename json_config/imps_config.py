@@ -174,7 +174,7 @@ IMPS_CONFIG = [
     {
         "process": {
             "select": [
-                "ad_id"
+                "ad_id",
                 "tag_id",
                 "location1",
                 "device1",
@@ -185,7 +185,7 @@ IMPS_CONFIG = [
                 "value_adv"
             ],
             "group_by": [
-                "ad_id"
+                "ad_id",
                 "tag_id",
                 "location1",
                 "device1",
@@ -212,5 +212,5 @@ IMPS_CONFIG = [
             }
         },
         "table_name": "stats_ads_performance"
-    },
+    }
 ]
