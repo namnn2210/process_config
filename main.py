@@ -1,10 +1,11 @@
 from datetime import datetime
-import os
 import adsapp, campaignapp, requestapp
 import argparse
+from loguru import logger
+from utils import get_last_hour
+import os
 
 today = datetime.today().strftime('%Y%m%d')
-hour = datetime.now().hour
 
 imps_path = 'imps'
 clicks_path = 'clicks'
@@ -13,17 +14,34 @@ requests_path = 'request'
 
 def create_args():
     ap = argparse.ArgumentParser()
-    ap.add_argument('-f', '--folderpath', required=True,
+    ap.add_argument('-f', '--folder_path', required=True,
                     help='Folder path')
-    args = vars(ap.parse_args())
+    ap.add_argument('-s', '--server_host', required=True, help='Server Host')
+    ap.add_argument('-lh', '--last_hour', default=False, action='store_true', help='Last hour')
+    ap.add_argument('-d', '--day', default=False, action='store_true', help='Beginning of the day')
+
+    args = ap.parse_args()
     return args
 
 
 if __name__ == '__main__':
     args = create_args()
-    # Read file by hour
-    imps_file_path = os.path.join(args['folderpath'], imps_path, '{}_{}_{}'.format(imps_path, today, hour))
-    # clicks_file_path = os.path.join(clicks_path, '{}_{}_{}'.format(clicks_path, today, hour))
-    # requests_file_path = os.path.join(requests_path, '{}_{}_{}'.format(requests_path, today, hour))
+    list_processing_hour = []
+    if args.last_hour and args.day:
+        logger.info('CHOOSE ONLY PROCESSING BY LAST HOUR OR BEGINNING OF THE DAY')
+    else:
+        if args.last_hour:
+            logger.info('PROCESS COLLECTING LAST HOUR')
+            last_hour = f"{get_last_hour():02d}"
+            list_processing_hour.append(last_hour)
+        elif args.day:
+            logger.info('PROCESS COLLECTING FROM BEGINNING OF THE DAY')
+            for hour in range(datetime.now().hour):
+                formated_hour = f"{hour:02d}"
+                list_processing_hour.append(formated_hour)
+        # Read file by hour
 
-    adsapp.do_agg(imps_file_path, hour)
+        # clicks_file_path = os.path.join(clicks_path, '{}_{}_{}'.format(clicks_path, today, hour))
+        # requests_file_path = os.path.join(requests_path, '{}_{}_{}'.format(requests_path, today, hour))
+
+        adsapp.do_agg(args.folder_path, imps_path, today, list_processing_hour, args.server_host)

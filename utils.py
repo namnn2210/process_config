@@ -1,4 +1,9 @@
 import models
+from datetime import datetime
+
+
+def get_last_hour():
+    return datetime.now().hour - 1
 
 
 def get_table_obj(table_name):
