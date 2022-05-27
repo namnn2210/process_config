@@ -3,7 +3,9 @@ import adsapp, campaignapp, requestapp
 import argparse
 from loguru import logger
 from utils import get_last_hour
-import os
+from json_config.imps_config import IMPS_CONFIG
+from json_config.clicks_config import CLICKS_CONFIG
+from config import IMPS_CLICK_HEADER, REQUESTS_HEADER
 
 today = datetime.today().strftime('%Y%m%d')
 
@@ -40,8 +42,9 @@ if __name__ == '__main__':
                 formated_hour = f"{hour:02d}"
                 list_processing_hour.append(formated_hour)
         # Read file by hour
-
-        # clicks_file_path = os.path.join(clicks_path, '{}_{}_{}'.format(clicks_path, today, hour))
         # requests_file_path = os.path.join(requests_path, '{}_{}_{}'.format(requests_path, today, hour))
 
-        adsapp.do_agg(args.folder_path, imps_path, today, list_processing_hour, args.server_host)
+        adsapp.process(args.folder_path, imps_path, today, list_processing_hour, args.server_host, IMPS_CONFIG,
+                       IMPS_CLICK_HEADER)
+        adsapp.process(args.folder_path, clicks_path, today, list_processing_hour, args.server_host, CLICKS_CONFIG,
+                       IMPS_CLICK_HEADER)
