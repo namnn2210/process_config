@@ -1,4 +1,4 @@
-CLICKS_CONFIG = {
+CLICKS_CONFIG = [
     {
         "process": {
             "select": [
@@ -213,4 +213,4 @@ CLICKS_CONFIG = {
         },
         "table_name": "stats_ads_performance"
     }
-}
+]

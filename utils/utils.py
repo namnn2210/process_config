@@ -89,6 +89,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                 table_name, process_select, process_group_by, table_name = processing_config(item)
                 file_path = os.path.join(folder_path, path, today,
                                          '{}_{}_{}.csv'.format(path, today, hour))
+                # file_path = 'requests_20220523_04.csv'
                 try:
                     imps_df = vaex.read_csv(file_path, header=None)
                     imps_df_cols = imps_df.column_names

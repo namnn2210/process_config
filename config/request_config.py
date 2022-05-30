@@ -1,4 +1,4 @@
-REQUESTS_CONFIG = {
+REQUESTS_CONFIG = [
     {
         "process": {
             "select": [
@@ -129,7 +129,7 @@ REQUESTS_CONFIG = {
                 "tag_id",
                 "location1",
                 "device1",
-                "device2"
+                "device2",
                 "request",
                 "paid"
             ],
@@ -158,4 +158,4 @@ REQUESTS_CONFIG = {
         },
         "table_name": "stats_tags_inventories"
     }
-}
+]

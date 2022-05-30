@@ -2,7 +2,7 @@ from datetime import datetime
 from process import imps_click_process, request_process
 import argparse
 from loguru import logger
-from utils import get_last_hour
+from utils.utils import get_last_hour
 from config.imps_config import IMPS_CONFIG
 from config.clicks_config import CLICKS_CONFIG
 from config.request_config import REQUESTS_CONFIG
@@ -20,7 +20,7 @@ def create_args():
     ap.add_argument('-f', '--folder_path', required=True,
                     help='Folder path')
     ap.add_argument('-s', '--server_host', required=True, help='Server Host')
-    ap.add_argument('-lh', '--last_hour', default=False, action='store_true', help='Last hour')
+    ap.add_argument('-l', '--last_hour', default=False, action='store_true', help='Last hour')
     ap.add_argument('-d', '--day', default=False, action='store_true', help='Beginning of the day')
     ap.add_argument('-i', '--imps', default=False, action='store_true', help='Imps mode')
     ap.add_argument('-c', '--clicks', default=False, action='store_true', help='Clicks mode')
@@ -46,7 +46,7 @@ if __name__ == '__main__':
                 formated_hour = f"{hour:02d}"
                 list_processing_hour.append(formated_hour)
         else:
-            logger.info('NO PROCESSING CHOSEN')
+            list_processing_hour.append(f"{datetime.now().hour:02d}")
         if (args.imps and args.clicks and args.requests) or (args.imps and args.clicks) or (args.imps and args.requests) or (args.clicks and args.requests):
             logger.info('CHOOSE ONLY ONE MODE: IMPS, CLICKS, REQUESTS')
         else:
@@ -62,3 +62,5 @@ if __name__ == '__main__':
                 request_process.process(args.folder_path, requests_path, today, list_processing_hour, args.server_host,
                                         REQUESTS_CONFIG,
                                         REQUESTS_HEADER)
+            else:
+                logger.info('NO MODE CHOSEN')
