@@ -1,4 +1,4 @@
-import models
+from models import models
 import vaex
 import os
 
@@ -6,7 +6,7 @@ from datetime import datetime
 from loguru import logger
 from vaex import agg
 from sqlalchemy.orm import sessionmaker
-from database import get_connection
+from database.database import get_connection
 
 dict_agg = {
 }

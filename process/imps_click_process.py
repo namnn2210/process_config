@@ -1,4 +1,4 @@
-from utils import do_agg
+from utils.utils import do_agg
 
 
 def process(folder_path, path, today, list_processing_hour, server_host, list_config, header):
