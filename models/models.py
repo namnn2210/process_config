@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, BIGINT, Float
+from sqlalchemy import Column, Integer, String, BIGINT, Float, Text
 from datetime import datetime
 
 Base = declarative_base()
@@ -136,7 +136,6 @@ class StatsAdsTagsCampaignByNodeHour(Base):
 
 
 class StatsAdsTagsDateByNodeHour(Base):
-
     __tablename__ = "stats_ads_tags_date_by_node_hour"
 
     id = Column(Integer, primary_key=True, autoincrement="auto")
@@ -418,3 +417,82 @@ class StatsUsersByNodeHour(Base):
     updated_time = Column(Integer, default=0)
     server_host = Column(String, default='')
     hour = Column(Integer, default=0)
+
+
+class Ads(Base):
+    __tablename__ = "ads"
+
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    origin_id = Column(Integer, default=0)
+    campaign_id = Column(Integer, default=0)
+    name = Column(String, default='')
+    kind = Column(Integer, default=0)
+    size_id = Column(Integer, default=0)
+    url = Column(String, default='')
+    title = Column(String, default='')
+    other_text = Column(Text, default='')
+    image = Column(String, default='')
+    image_brand_logo = Column(String, default='')
+    brand_data = Column(String, default='')
+    des_link = Column(String, default='')
+    run_type = Column(Integer, default=0)
+    cpm = Column(Float, default=0.0)
+    click_price = Column(Float, default=0.0)
+    usd_cpm = Column(Float, default=0.0)
+    usd_click_price = Column(Float, default=0.0)
+    reject_reason = Column(String, default='')
+    opt_store = Column(Integer, default=0)
+    status = Column(Integer, default=0)
+    status_media = Column(Integer, default=0)
+    status_adv = Column(Integer, default=0)
+    status_adv_old = Column(Integer, default=0)
+    archived_is = Column(Integer, default=0)
+    created_time = Column(Integer, default=0)
+    updated_time = Column(Integer, default=0)
+
+
+class Tags(Base):
+    __tablename__ = "tags"
+
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    domain_id = Column(Integer, default=0)
+    size_id = Column(Integer, default=0)
+    type = Column(Integer, default=0)
+    tag_column = Column(Integer, default=0)
+    tag_row = Column(Integer, default=0)
+    name = Column(String, default='')
+    item_number = Column(Integer, default=0)
+    css = Column(Text, default='')
+    passback = Column(Text, default='')
+    pb_adx = Column(Text, default='')
+    source_type = Column(Integer, default=0)
+    source_id = Column(Integer, default=0)
+    source_pb = Column(Text, default='')
+    rmkt_is = Column(Integer, default=0)
+    cpm = Column(Float, default=0.0)
+    data = Column(Text, default='')
+    volume_type = Column(Integer, default=0)
+    status = Column(Integer, default=0)
+    status_sys = Column(Integer, default=0)
+    created_time = Column(Integer, default=0)
+    updated_time = Column(Integer, default=0)
+
+
+class ConversionsClick(Base):
+    __tablename__ = "conversions_click"
+
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    click_id = Column(String, default='')
+    tag_id = Column(Integer, default=0)
+    campaign_id = Column(Integer, default=0)
+    ad_id = Column(Integer, default=0)
+    date = Column(String, default=datetime.today().strftime('%Y%m%d'))
+    location1 = Column(Integer, default=0)
+    location2 = Column(Integer, default=0)
+    device1 = Column(Integer, default=0)
+    device2 = Column(Integer, default=0)
+    browser = Column(Integer, default=0)
+    position = Column(Integer, default=0)
+    missing = Column(Integer, default=0)
+    payout = Column(Integer, default=0)
+    conversions = Column(Integer, default=0)

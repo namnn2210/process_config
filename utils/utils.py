@@ -89,7 +89,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                 table_name, process_select, process_group_by, table_name = processing_config(item)
                 file_path = os.path.join(folder_path, path, today,
                                          '{}_{}_{}.csv'.format(path, today, hour))
-                # file_path = 'requests_20220523_04.csv'
+                # file_path = 'imps_20220531_00.csv'
                 try:
                     imps_df = vaex.read_csv(file_path, header=None)
                     imps_df_cols = imps_df.column_names
@@ -112,12 +112,15 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                         exist_obj = session.query(table_obj)
                         for col in process_group_by:
                             exist_obj = exist_obj.filter(getattr(table_obj, col) == row[col])
+                        exist_obj = exist_obj.filter(getattr(table_obj, 'date') == datetime.today().strftime('%Y-%m-%d'))
                         exist_obj = exist_obj.first()
                         if exist_obj is not None:
                             for col in list_cols:
                                 setattr(exist_obj, col, row[col])
                                 setattr(exist_obj, 'hour', hour)
                                 setattr(exist_obj, 'server_host', server_host)
+                            if table_name == 'stats_tags_inventories':
+                                pass
                             session.commit()
                         else:
                             obj = table_obj()
@@ -125,6 +128,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                                 setattr(obj, col, row[col])
                             setattr(obj, 'hour', hour)
                             setattr(obj, 'server_host', server_host)
+                            setattr(obj, 'date', datetime.today().strftime('%Y-%m-%d'))
                             session.add(obj)
                             session.commit()
                     session.close()
