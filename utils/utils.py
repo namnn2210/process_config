@@ -3,7 +3,7 @@ import vaex
 import os
 import time
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from loguru import logger
 from vaex import agg
 from sqlalchemy.orm import sessionmaker
@@ -146,12 +146,33 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
         logger.info('PROCESSING ERROR: %s' % str(ex))
 
 
-def start(folder_path, path, list_processing_hour, server_host, list_config, header, is_crontab):
+def start(folder_path, path, list_processing_hour, server_host, list_config, header, is_last_hour, is_day, is_yesterday,
+          is_crontab):
+    today = None
+    if is_last_hour:
+        logger.info('PROCESS COLLECTING LAST HOUR')
+        last_hour = f"{get_last_hour():02d}"
+        list_processing_hour.append(last_hour)
+    elif is_day:
+        logger.info('PROCESS COLLECTING FROM BEGINNING OF THE DAY')
+        for hour in range(datetime.now().hour):
+            formated_hour = f"{hour:02d}"
+            list_processing_hour.append(formated_hour)
+    elif is_yesterday:
+        today = (datetime.now() - timedelta(days=1)).today()
+        for hour in range(0, 24):
+            formated_hour = f"{hour:02d}"
+            list_processing_hour.append(formated_hour)
+    elif is_crontab:
+        processing_datetime = datetime.now() - timedelta(hours=1)
+        list_processing_hour.append(processing_datetime.hour)
+        today = processing_datetime.today()
+    else:
+        today = datetime.today().strftime('%Y%m%d')
+        list_processing_hour.append(f"{datetime.now().hour:02d}")
     if is_crontab:
         while True:
-            today = datetime.today().strftime('%Y%m%d')
             do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header)
             time.sleep(120)
     else:
-        today = datetime.today().strftime('%Y%m%d')
         do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header)
