@@ -160,7 +160,7 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
             formated_hour = f"{hour:02d}"
             list_processing_hour.append(formated_hour)
     elif is_yesterday:
-        today = (datetime.now() - timedelta(days=1)).today()
+        today = (datetime.now() - timedelta(days=1)).today().strftime('%Y%m%d')
         for hour in range(0, 24):
             formated_hour = f"{hour:02d}"
             list_processing_hour.append(formated_hour)
