@@ -82,17 +82,17 @@ def processing_config(json_config):
 
 
 def do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header):
-    new_hour = 0
     try:
+        raw_today = today.strftime('%Y%m%d')
+        filter_today = today.strftime('%Y-%m-%d')
         for hour in list_processing_hour:
-            new_hour_format = f"{new_hour:02d}"
             logger.info("PROCESSING HOUR %s" % hour)
             for item in list_config:
                 logger.info("PROCESSING TABLE %s" % item)
                 table_name, process_select, process_group_by, table_name = processing_config(item)
 
-                file_path = os.path.join(folder_path, path, today,
-                                         '{}_{}_{}.csv'.format(path, today, new_hour_format))
+                file_path = os.path.join(folder_path, path, raw_today,
+                                         '{}_{}_{}.csv'.format(path, raw_today, hour))
                 # file_path = 'imps_20220531_00.csv'
                 try:
                     imps_df = vaex.read_csv(file_path, header=None)
@@ -117,7 +117,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                         for col in process_group_by:
                             exist_obj = exist_obj.filter(getattr(table_obj, col) == row[col])
                         exist_obj = exist_obj.filter(
-                            getattr(table_obj, 'date') == datetime.today().strftime('%Y-%m-%d')).filter(
+                            getattr(table_obj, 'date') == filter_today).filter(
                             getattr(table_obj, 'hour') == hour)
                         exist_obj = exist_obj.first()
                         if exist_obj is not None:
@@ -133,7 +133,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                                 setattr(obj, col, row[col])
                             setattr(obj, 'hour', hour)
                             setattr(obj, 'server_host', server_host)
-                            setattr(obj, 'date', datetime.today().strftime('%Y-%m-%d'))
+                            setattr(obj, 'date', filter_today)
                             session.add(obj)
                             session.commit()
                     session.close()
@@ -141,7 +141,6 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                     logger.info('ERROR: %s' % str(file_not_found))
                     logger.info("FILE HOUR %s NOT FOUND" % hour)
                     continue
-            new_hour += 1
     except Exception as ex:
         logger.info('PROCESSING ERROR: %s' % str(ex))
 
@@ -155,12 +154,12 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
         list_processing_hour.append(last_hour)
     elif is_day:
         logger.info('PROCESS COLLECTING FROM BEGINNING OF THE DAY')
-        today = datetime.today().strftime('%Y%m%d')
+        today = datetime.today()
         for hour in range(datetime.now().hour):
             formated_hour = f"{hour:02d}"
             list_processing_hour.append(formated_hour)
     elif is_yesterday:
-        today = (datetime.now() - timedelta(days=1)).today().strftime('%Y%m%d')
+        today = (datetime.now() - timedelta(days=1))
         for hour in range(0, 24):
             formated_hour = f"{hour:02d}"
             list_processing_hour.append(formated_hour)
@@ -169,11 +168,12 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
         list_processing_hour.append(processing_datetime.hour)
         today = processing_datetime.today()
     else:
-        today = datetime.today().strftime('%Y%m%d')
+        today = datetime.today()
         list_processing_hour.append(f"{datetime.now().hour:02d}")
     if is_crontab:
         while True:
             do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header)
             time.sleep(120)
     else:
+        logger.info(type(today))
         do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header)
