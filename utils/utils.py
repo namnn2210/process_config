@@ -155,6 +155,7 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
         list_processing_hour.append(last_hour)
     elif is_day:
         logger.info('PROCESS COLLECTING FROM BEGINNING OF THE DAY')
+        today = datetime.today().strftime('%Y%m%d')
         for hour in range(datetime.now().hour):
             formated_hour = f"{hour:02d}"
             list_processing_hour.append(formated_hour)
