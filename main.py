@@ -9,8 +9,6 @@ from config.request_config import REQUESTS_CONFIG
 from config.general_config import IMPS_CLICK_HEADER, REQUESTS_HEADER
 from datetime import datetime, timedelta
 
-today = datetime.today().strftime('%Y%m%d')
-
 
 imps_path = 'imps'
 clicks_path = 'clicks'
@@ -24,7 +22,7 @@ def create_args():
     ap.add_argument('-s', '--server_host', required=True, help='Server Host')
     ap.add_argument('-l', '--last_hour', default=False, action='store_true', help='Last hour')
     ap.add_argument('-d', '--day', default=False, action='store_true', help='Beginning of the day')
-    ap.add_argument('-y', '--yesterday', default=False, action='store_true', help='The last hour of yesterday')
+    ap.add_argument('-cr', '--crontab', default=False, action='store_true', help='Crontab mode')
     ap.add_argument('-i', '--imps', default=False, action='store_true', help='Imps mode')
     ap.add_argument('-c', '--clicks', default=False, action='store_true', help='Clicks mode')
     ap.add_argument('-r', '--requests', default=False, action='store_true', help='Requests mode')
@@ -51,7 +49,7 @@ if __name__ == '__main__':
         elif args.yesterday:
             processing_datetime = datetime.now() - timedelta(hours=1)
             list_processing_hour.append(processing_datetime.hour)
-            today = processing_datetime.date()
+            today = processing_datetime.today()
         else:
             list_processing_hour.append(f"{datetime.now().hour:02d}")
         if (args.imps and args.clicks and args.requests) or (args.imps and args.clicks) or (
@@ -59,17 +57,17 @@ if __name__ == '__main__':
             logger.info('CHOOSE ONLY ONE MODE: IMPS, CLICKS, REQUESTS')
         else:
             if args.imps:
-                imps_click_process.process(args.folder_path, imps_path, today, list_processing_hour, args.server_host,
+                imps_click_process.process(args.folder_path, imps_path, list_processing_hour, args.server_host,
                                            IMPS_CONFIG,
-                                           IMPS_CLICK_HEADER)
+                                           IMPS_CLICK_HEADER, args.crontab)
             elif args.clicks:
-                imps_click_process.process(args.folder_path, clicks_path, today, list_processing_hour, args.server_host,
+                imps_click_process.process(args.folder_path, clicks_path, list_processing_hour, args.server_host,
                                            CLICKS_CONFIG,
-                                           IMPS_CLICK_HEADER)
+                                           IMPS_CLICK_HEADER, args.crontab)
             elif args.requests:
-                request_process.process(args.folder_path, requests_path, today, list_processing_hour, args.server_host,
+                request_process.process(args.folder_path, requests_path, list_processing_hour, args.server_host,
                                         REQUESTS_CONFIG,
-                                        REQUESTS_HEADER)
+                                        REQUESTS_HEADER, args.crontab)
             else:
                 logger.info('NO MODE CHOSEN')
 

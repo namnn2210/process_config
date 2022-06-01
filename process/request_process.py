@@ -1,8 +1,5 @@
-from utils.utils import do_agg
-import time
+from utils.utils import start
 
 
-def process(folder_path, path, today, list_processing_hour, server_host, list_config, header):
-    while True:
-        do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header)
-        time.sleep(120)
+def process(folder_path, path, list_processing_hour, server_host, list_config, header, is_crontab):
+    start(folder_path, path, list_processing_hour, server_host, list_config, header, is_crontab)

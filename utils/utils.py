@@ -1,6 +1,7 @@
 from models import models
 import vaex
 import os
+import time
 
 from datetime import datetime
 from loguru import logger
@@ -81,8 +82,10 @@ def processing_config(json_config):
 
 
 def do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header):
+    new_hour = 0
     try:
         for hour in list_processing_hour:
+            new_hour_format = f"{new_hour:02d}"
             logger.info("PROCESSING HOUR %s" % hour)
             for item in list_config:
                 logger.info("PROCESSING TABLE %s" % item)
@@ -120,8 +123,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                         if exist_obj is not None:
                             for col in list_cols:
                                 setattr(exist_obj, col, row[col])
-                                setattr(exist_obj, 'hour', hour)
-                                setattr(exist_obj, 'server_host', server_host)
+                            setattr(exist_obj, 'server_host', server_host)
                             if table_name == 'stats_tags_inventories':
                                 pass
                             session.commit()
@@ -139,5 +141,17 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
                     logger.info('ERROR: %s' % str(file_not_found))
                     logger.info("FILE HOUR %s NOT FOUND" % hour)
                     continue
+            new_hour += 1
     except Exception as ex:
         logger.info('PROCESSING ERROR: %s' % str(ex))
+
+
+def start(folder_path, path, list_processing_hour, server_host, list_config, header, is_crontab):
+    if is_crontab:
+        while True:
+            today = datetime.today().strftime('%Y%m%d')
+            do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header)
+            time.sleep(120)
+    else:
+        today = datetime.today().strftime('%Y%m%d')
+        do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header)
