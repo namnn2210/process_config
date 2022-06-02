@@ -8,13 +8,21 @@ from loguru import logger
 from vaex import agg
 from sqlalchemy.orm import sessionmaker
 from database.database import get_connection
+import pytz
 
 dict_agg = {
 }
 
 
+def get_current_date_hour():
+    tz = pytz.timezone('Asia/Ho_Chi_Minh')
+    ct = datetime.now(tz=tz)
+    return ct
+
+
 def get_last_hour():
-    return datetime.now().hour - 1
+    _, current_hour = get_current_date_hour()
+    return current_hour - 1
 
 
 def get_table_obj(table_name):
@@ -63,9 +71,8 @@ def get_table_obj(table_name):
 
 
 def processing_config(json_config):
-    dict_config = json_config
-    process = dict_config['process']
-    table_name = dict_config['table_name']
+    process = json_config['process']
+    table_name = json_config['table_name']
     process_select = process['select']
     process_group_by = process['group_by']
     process_agg = process['agg']
@@ -154,24 +161,26 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
         list_processing_hour.append(last_hour)
     elif is_day:
         logger.info('PROCESS COLLECTING FROM BEGINNING OF THE DAY')
-        today = datetime.today()
-        for hour in range(datetime.now().hour):
+        today = get_current_date_hour()
+        for hour in range(today.hour):
             formated_hour = f"{hour:02d}"
             list_processing_hour.append(formated_hour)
     elif is_yesterday:
         logger.info('PROCESS COLLECTING YESTERDAY MODE')
-        today = (datetime.now() - timedelta(days=1))
+        ct = get_current_date_hour()
+        today = (ct - timedelta(days=1))
         for hour in range(0, 24):
             formated_hour = f"{hour:02d}"
             list_processing_hour.append(formated_hour)
     elif is_crontab:
         logger.info('PROCESS COLLECTING CRONTAB MODE')
-        processing_datetime = datetime.now() - timedelta(hours=1)
+        ct = get_current_date_hour()
+        processing_datetime = ct - timedelta(hours=1)
         list_processing_hour.append(processing_datetime.hour)
         today = processing_datetime.today()
     else:
-        today = datetime.today()
-        list_processing_hour.append(f"{datetime.now().hour:02d}")
+        today = get_current_date_hour()
+        list_processing_hour.append(f"{today.hour:02d}")
     if is_crontab:
         do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header)
     else:
