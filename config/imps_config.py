@@ -1,5 +1,6 @@
 IMPS_CONFIG = [
     {
+        "nested": False,
         "process": {
             "select": [
                 "ad_id",
@@ -28,9 +29,10 @@ IMPS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_ads_tags_date"
+        "table_name": "stats_ads_tags_dat_by_node_hour"
     },
     {
+        "nested": False,
         "process": {
             "select": [
                 "ad_id",
@@ -61,9 +63,10 @@ IMPS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_ads_tags_location"
+        "table_name": "stats_ads_tags_location_by_node_hour"
     },
     {
+        "nested": False,
         "process": {
             "select": [
                 "ad_id",
@@ -96,9 +99,10 @@ IMPS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_ads_tags_device"
+        "table_name": "stats_ads_tags_device_by_node_hour"
     },
     {
+        "nested": False,
         "process": {
             "select": [
                 "ad_id",
@@ -129,9 +133,10 @@ IMPS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_ads_tags_browser"
+        "table_name": "stats_ads_tags_browser_by_node_hour"
     },
     {
+        "nested": False,
         "process": {
             "select": [
                 "tag_id",
@@ -169,9 +174,10 @@ IMPS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_tags_inventories"
+        "table_name": "stats_tags_inventories_by_node_hour"
     },
     {
+        "nested": False,
         "process": {
             "select": [
                 "ad_id",
@@ -211,6 +217,70 @@ IMPS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_ads_performance"
+        "table_name": "stats_ads_performance_by_node_hour"
+    },
+    {
+        "nested": True,
+        "process_1": {
+            "select": [
+                "kmap",
+                "tag_id",
+                "campaign_id",
+                "number",
+                "price"
+            ],
+            "group_by": [
+                "kmap",
+                "tag_id",
+                "campaign_id"
+            ],
+            "agg": {
+                "sum": [
+                    {
+                        "field": [
+                            "number",
+                        ],
+                        "alias": "imps",
+                    },
+                    {
+                        "field": [
+                            "price"
+                        ],
+                        "alias": "prices"
+                    }
+                ]
+            }
+        },
+        "process_2": {
+            "select": [
+                "kmap",
+                "tag_id",
+                "campaign_id",
+                "number",
+                "price"
+            ],
+            "group_by": [
+                "kmap",
+                "tag_id",
+                "campaign_id"
+            ],
+            "agg": {
+                "sum": [
+                    {
+                        "field": [
+                            "number",
+                        ],
+                        "alias": "imps",
+                    },
+                    {
+                        "field": [
+                            "price"
+                        ],
+                        "alias": "prices"
+                    }
+                ]
+            }
+        },
+        "table_name": "stats_ads_tags_campaign_by_node_hour"
     }
 ]

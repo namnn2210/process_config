@@ -26,7 +26,7 @@ REQUESTS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_tags_date"
+        "table_name": "stats_tags_date_by_node_hour"
     },
     {
         "process": {
@@ -57,7 +57,7 @@ REQUESTS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_tags_location"
+        "table_name": "stats_tags_location_by_node_hour"
     },
     {
         "process": {
@@ -90,7 +90,7 @@ REQUESTS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_tags_device"
+        "table_name": "stats_tags_device_by_node_hour"
     },
     {
         "process": {
@@ -121,7 +121,7 @@ REQUESTS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_tags_browser"
+        "table_name": "stats_tags_browser_by_node_hour"
     },
     {
         "process": {
@@ -156,6 +156,6 @@ REQUESTS_CONFIG = [
                 ]
             }
         },
-        "table_name": "stats_tags_inventories"
+        "table_name": "stats_tags_inventories_by_node_hour"
     }
 ]
