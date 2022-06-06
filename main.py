@@ -51,7 +51,6 @@ if __name__ == '__main__':
             elif args.requests:
                 request_process.process(args.folder_path, requests_path, list_processing_hour, args.server_host,
                                         REQUESTS_CONFIG,
-                                        REQUESTS_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
-                                        campaign=False)
+                                        REQUESTS_HEADER, args.last_hour, args.day, args.yesterday, args.crontab)
             else:
                 logger.info('NO MODE CHOSEN')
