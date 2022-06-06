@@ -212,36 +212,5 @@ CLICKS_CONFIG = [
             }
         },
         "table_name": "stats_ads_performance_by_node_hour"
-    },
-    {
-        "process": {
-            "select": [
-                "tag_id",
-                "campaign_id",
-                "number",
-                "price_click"
-            ],
-            "group_by": [
-                "tag_id",
-                "campaign_id"
-            ],
-            "agg": {
-                "sum": [
-                    {
-                        "field": [
-                            "number"
-                        ],
-                        "alias": "click_raw"
-                    },
-                    {
-                        "field": [
-                            "price_click"
-                        ],
-                        "alias": "spent_cpc_raw"
-                    }
-                ]
-            }
-        },
-        "table_name": "stats_ads_tags_campaign_by_node_hour"
     }
 ]
