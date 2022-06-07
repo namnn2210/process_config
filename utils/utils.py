@@ -268,24 +268,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
 def start(folder_path, path, list_processing_hour, server_host, list_config, header, is_last_hour, is_day, is_yesterday,
           is_crontab, campaign):
     today = None
-    if is_last_hour:
-        logger.info('PROCESS COLLECTING LAST HOUR')
-        last_hour = f"{get_last_hour():02d}"
-        list_processing_hour.append(last_hour)
-    elif is_day:
-        logger.info('PROCESS COLLECTING FROM BEGINNING OF THE DAY')
-        today = get_current_date_hour()
-        for hour in range(today.hour):
-            formated_hour = f"{hour:02d}"
-            list_processing_hour.append(formated_hour)
-    elif is_yesterday:
-        logger.info('PROCESS COLLECTING YESTERDAY MODE')
-        ct = get_current_date_hour()
-        today = (ct - timedelta(days=1))
-        for hour in range(0, 24):
-            formated_hour = f"{hour:02d}"
-            list_processing_hour.append(formated_hour)
-    elif is_crontab:
+    if is_crontab:
         logger.info('PROCESS COLLECTING CRONTAB MODE')
         ct = get_current_date_hour()
         processing_datetime = ct - timedelta(hours=1)
@@ -295,7 +278,23 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
         do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header, campaign)
     else:
         while True:
-            today = get_current_date_hour()
-            list_processing_hour.append(f"{today.hour:02d}")
+            if is_last_hour:
+                logger.info('PROCESS COLLECTING LAST HOUR')
+                last_hour = f"{get_last_hour():02d}"
+                list_processing_hour.append(last_hour)
+            elif is_day:
+                logger.info('PROCESS COLLECTING FROM BEGINNING OF THE DAY')
+                today = get_current_date_hour()
+                for hour in range(today.hour):
+                    formated_hour = f"{hour:02d}"
+                    list_processing_hour.append(formated_hour)
+            elif is_yesterday:
+                logger.info('PROCESS COLLECTING YESTERDAY MODE')
+                ct = get_current_date_hour()
+                today = (ct - timedelta(days=1))
+                logger.info("YESTERDAY DATE %s" % today)
+                for hour in range(0, 24):
+                    formated_hour = f"{hour:02d}"
+                    list_processing_hour.append(formated_hour)
             do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header, campaign)
             time.sleep(120)
