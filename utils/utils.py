@@ -23,8 +23,8 @@ def get_current_date_hour():
 
 
 def get_last_hour():
-    _, current_hour = get_current_date_hour()
-    return current_hour - 1
+    ct = get_current_date_hour()
+    return ct.hour - 1
 
 
 def get_table_obj(table_name):
@@ -270,6 +270,8 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
     today = None
     if is_last_hour:
         logger.info('PROCESS COLLECTING LAST HOUR')
+        today = get_current_date_hour()
+        logger.info("==================== %s" % today)
         last_hour = f"{get_last_hour():02d}"
         list_processing_hour.append(last_hour)
     elif is_day:
