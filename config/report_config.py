@@ -166,7 +166,7 @@ AND tt1.date=t3.date
 AND tt1.location1 = t3.location1
     """,
         'index': ['tag_id', 'date', 'location1', 'location2'],
-        'table_name': 'stats_ads_tags_location_by_node_hour'
+        'table_name': 'stats_tags_location_by_node_hour'
     },
     {
         'sql': """

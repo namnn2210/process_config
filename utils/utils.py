@@ -100,6 +100,8 @@ def get_table_obj(table_name):
         return models.StatsTagsLocationByNodeHour
     elif table_name == 'stats_tags_location':
         return models.StatsTagsLocation
+    elif table_name == 'stats_tags_location_swap':
+        return models.StatsTagsLocationSwap
     elif table_name == 'stats_users_by_node_hour':
         return models.StatsUsersByNodeHour
     else:

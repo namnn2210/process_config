@@ -775,6 +775,29 @@ class StatsTagsLocation(Base):
     rev_real = Column(Integer, default=0)
 
 
+class StatsTagsLocationSwap(Base):
+    __tablename__ = "stats_tags_location_swap"
+
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    date = Column(String, default=datetime.today().strftime('%Y%m%d'))
+    tag_id = Column(Integer, default=0)
+    location1 = Column(Integer, default=0)
+    location2 = Column(Integer, default=0)
+    imp = Column(Integer, default=0)
+    request = Column(Integer, default=0)
+    paid = Column(Integer, default=0)
+    source_id = Column(Integer, default=0)
+    spent_cpm = Column(Integer, default=0)
+    click_landing = Column(Integer, default=0)
+    click = Column(Integer, default=0)
+    spent_cpc_landing = Column(Integer, default=0)
+    click_raw = Column(Integer, default=0)
+    spent_cpc_raw = Column(Integer, default=0)
+    spent = Column(Integer, default=0)
+    rev_opt = Column(Integer, default=0)
+    rev_real = Column(Integer, default=0)
+
+
 class StatsUsersByNodeHour(Base):
     __tablename__ = "stats_users_by_node_hour"
 
