@@ -214,6 +214,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
 
                 file_path = os.path.join(folder_path, path, raw_today,
                                          '{}_{}_{}.csv'.format(path, raw_today, hour))
+                logger.info(file_path)
                 try:
                     imps_df = vaex.read_csv(file_path, header=None)
                     imps_df_cols = imps_df.column_names

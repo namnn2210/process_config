@@ -46,19 +46,22 @@ if __name__ == '__main__':
                 if args.imps:
                     imps_click_process.process(args.folder_path, imps_path, list_processing_hour, args.server_host,
                                                IMPS_CONFIG,
-                                               IMPS_CLICK_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
+                                               IMPS_CLICK_HEADER, args.last_hour, args.day, args.yesterday,
+                                               args.crontab,
                                                args.custom_date,
                                                campaign=True)
                 elif args.clicks:
                     imps_click_process.process(args.folder_path, clicks_path, list_processing_hour, args.server_host,
                                                CLICKS_CONFIG,
-                                               IMPS_CLICK_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
+                                               IMPS_CLICK_HEADER, args.last_hour, args.day, args.yesterday,
+                                               args.crontab,
                                                args.custom_date,
                                                campaign=False)
                 elif args.requests:
                     request_process.process(args.folder_path, requests_path, list_processing_hour, args.server_host,
                                             REQUESTS_CONFIG,
                                             REQUESTS_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
+                                            args.custom_date,
                                             campaign=False)
                 else:
                     logger.info('NO MODE CHOSEN')
