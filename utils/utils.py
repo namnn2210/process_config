@@ -266,7 +266,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
 
 
 def start(folder_path, path, list_processing_hour, server_host, list_config, header, is_last_hour, is_day, is_yesterday,
-          is_crontab, campaign):
+          is_crontab, custom_date, campaign=False):
     today = None
     if is_last_hour:
         logger.info('PROCESS COLLECTING LAST HOUR')
@@ -294,7 +294,13 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
         processing_datetime = ct - timedelta(hours=1)
         list_processing_hour.append(processing_datetime.hour)
         today = processing_datetime.today()
-    if is_crontab or is_last_hour or is_day or is_yesterday:
+    elif custom_date is not None:
+        today = datetime.strptime(custom_date, '%Y-%m-%d')
+        logger.info("CUSTOM DATE %s" % today)
+        for hour in range(0, 24):
+            formated_hour = f"{hour:02d}"
+            list_processing_hour.append(formated_hour)
+    if is_crontab or is_last_hour or is_day or is_yesterday or custom_date is not None:
         do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header, campaign)
     else:
         while True:

@@ -23,6 +23,7 @@ def create_args():
     ap.add_argument('-i', '--imps', default=False, action='store_true', help='Imps mode')
     ap.add_argument('-c', '--clicks', default=False, action='store_true', help='Clicks mode')
     ap.add_argument('-r', '--requests', default=False, action='store_true', help='Requests mode')
+    ap.add_argument('-cd', '--custom_date', help='Custom date', type=str)
 
     args = ap.parse_args()
     return args
@@ -38,20 +39,26 @@ if __name__ == '__main__':
                 args.imps and args.requests) or (args.clicks and args.requests):
             logger.info('CHOOSE ONLY ONE MODE: IMPS, CLICKS, REQUESTS')
         else:
-            if args.imps:
-                imps_click_process.process(args.folder_path, imps_path, list_processing_hour, args.server_host,
-                                           IMPS_CONFIG,
-                                           IMPS_CLICK_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
-                                           campaign=True)
-            elif args.clicks:
-                imps_click_process.process(args.folder_path, clicks_path, list_processing_hour, args.server_host,
-                                           CLICKS_CONFIG,
-                                           IMPS_CLICK_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
-                                           campaign=False)
-            elif args.requests:
-                request_process.process(args.folder_path, requests_path, list_processing_hour, args.server_host,
-                                        REQUESTS_CONFIG,
-                                        REQUESTS_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
-                                        campaign=False)
+            if (args.custom_date and args.last_hour) or (args.custom_date and args.day) or (
+                    args.custom_date and args.yesterday) or (args.custom_date and args.crontab):
+                logger.info('CHOOSE ONLY ONE PROCESSING DATE: LAST HOUR, TODAY, YESTERDAY CUSTOM DATE')
             else:
-                logger.info('NO MODE CHOSEN')
+                if args.imps:
+                    imps_click_process.process(args.folder_path, imps_path, list_processing_hour, args.server_host,
+                                               IMPS_CONFIG,
+                                               IMPS_CLICK_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
+                                               args.custom_date,
+                                               campaign=True)
+                elif args.clicks:
+                    imps_click_process.process(args.folder_path, clicks_path, list_processing_hour, args.server_host,
+                                               CLICKS_CONFIG,
+                                               IMPS_CLICK_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
+                                               args.custom_date,
+                                               campaign=False)
+                elif args.requests:
+                    request_process.process(args.folder_path, requests_path, list_processing_hour, args.server_host,
+                                            REQUESTS_CONFIG,
+                                            REQUESTS_HEADER, args.last_hour, args.day, args.yesterday, args.crontab,
+                                            campaign=False)
+                else:
+                    logger.info('NO MODE CHOSEN')
