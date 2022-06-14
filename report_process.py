@@ -23,10 +23,13 @@ if __name__ == '__main__':
                 logger.info('PROCESSING TABLE %s ' % config['table_name'].replace("_by_node_hour", "_swap"))
                 raw_table_obj = get_table_obj(config['table_name'].replace("_by_node_hour", "_swap"))
                 df = pd.read_sql(sql, session.bind)
-                df = df.fillna(0)
+                # df = df.fillna(0)
                 list_cols = list(df.columns.values)
                 for _, row in df.iterrows():
                     exist_obj = session.query(raw_table_obj)
+                    if row['tag_id'] == 1164 and row['ad_id'] == 31581 and row['browser'] == 3119:
+                        a = 1
+                        # logger.info(row['spent'])
                     for index in indexes:
                         exist_obj = exist_obj.filter(getattr(raw_table_obj, index) == row[index])
                     exist_obj = exist_obj.first()

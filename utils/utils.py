@@ -36,6 +36,10 @@ def get_table_obj(table_name):
         return models.StatsAdsLocationByNodeHour
     elif table_name == 'stats_ads_performance_by_node_hour':
         return models.StatsAdsPerformanceByNodeHour
+    elif table_name == 'stats_ads_performance':
+        return models.StatsAdsPerformance
+    elif table_name == 'stats_ads_performance_swap':
+        return models.StatsAdsPerformanceSwap
     elif table_name == 'stats_ads_tags_browser_by_node_hour':
         return models.StatsAdsTagsBrowserByNodeHour
     elif table_name == 'stats_ads_tags_browser':
@@ -44,6 +48,10 @@ def get_table_obj(table_name):
         return models.StatsAdsTagsBrowserSwap
     elif table_name == 'stats_ads_tags_campaign_by_node_hour':
         return models.StatsAdsTagsCampaignByNodeHour
+    elif table_name == 'stats_ads_tags_campaign':
+        return models.StatsAdsTagsCampaign
+    elif table_name == 'stats_ads_tags_campaign_swap':
+        return models.StatsAdsTagsCampaignSwap
     elif table_name == 'stats_ads_tags_date_by_node_hour':
         return models.StatsAdsTagsDateByNodeHour
     elif table_name == 'stats_ads_tags_date':
@@ -305,6 +313,7 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
         do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header, campaign)
     else:
         while True:
+            list_processing_hour = []
             today = get_current_date_hour()
             list_processing_hour.append(f"{today.hour:02d}")
             do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header, campaign)

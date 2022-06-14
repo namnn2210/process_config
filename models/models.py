@@ -89,6 +89,54 @@ class StatsAdsPerformanceByNodeHour(Base):
     hour = Column(Integer, default=0)
 
 
+class StatsAdsPerformance(Base):
+    __tablename__ = "stats_ads_performance"
+
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    date = Column(String, default=datetime.today().strftime('%Y%m%d'))
+    ad_id = Column(Integer, default=0)
+    tag_id = Column(Integer, default=0)
+    domain_id = Column(Integer, default=0)
+    campaign_id = Column(Integer, default=0)
+    location1 = Column(Integer, default=0)
+    device1 = Column(Integer, default=0)
+    device2 = Column(Integer, default=0)
+    imp = Column(Integer, default=0)
+    spent_cpm = Column(Integer, default=0)
+    click_landing = Column(Integer, default=0)
+    spent_cpc_landing = Column(Integer, default=0)
+    click_raw = Column(Integer, default=0)
+    click = Column(Integer, default=0)
+    spent_cpc_raw = Column(Integer, default=0)
+    rev_opt = Column(Integer, default=0)
+    rev_real = Column(Integer, default=0)
+    updated_time = Column(Integer, default=0)
+
+
+class StatsAdsPerformanceSwap(Base):
+    __tablename__ = "stats_ads_performance_swap"
+
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    date = Column(String, default=datetime.today().strftime('%Y%m%d'))
+    ad_id = Column(Integer, default=0)
+    tag_id = Column(Integer, default=0)
+    domain_id = Column(Integer, default=0)
+    campaign_id = Column(Integer, default=0)
+    location1 = Column(Integer, default=0)
+    device1 = Column(Integer, default=0)
+    device2 = Column(Integer, default=0)
+    imp = Column(Integer, default=0)
+    spent_cpm = Column(Integer, default=0)
+    click_landing = Column(Integer, default=0)
+    spent_cpc_landing = Column(Integer, default=0)
+    click_raw = Column(Integer, default=0)
+    click = Column(Integer, default=0)
+    spent_cpc_raw = Column(Integer, default=0)
+    rev_opt = Column(Integer, default=0)
+    rev_real = Column(Integer, default=0)
+    updated_time = Column(Integer, default=0)
+
+
 class StatsAdsTagsBrowserByNodeHour(Base):
     __tablename__ = "stats_ads_tags_browser_by_node_hour"
 
@@ -105,6 +153,7 @@ class StatsAdsTagsBrowserByNodeHour(Base):
     click_raw = Column(Integer, default=0)
     click = Column(Integer, default=0)
     spent_cpc_raw = Column(Integer, default=0)
+    spent = Column(Integer, default=0)
     rev_opt = Column(Integer, default=0)
     rev_real = Column(Integer, default=0)
     server_host = Column(String, default='')
@@ -127,6 +176,7 @@ class StatsAdsTagsBrowser(Base):
     click_raw = Column(Integer, default=0)
     click = Column(Integer, default=0)
     spent_cpc_raw = Column(Integer, default=0)
+    spent = Column(Integer, default=0)
     rev_opt = Column(Integer, default=0)
     rev_real = Column(Integer, default=0)
 
@@ -142,6 +192,7 @@ class StatsAdsTagsBrowserSwap(Base):
     imp = Column(Integer, default=0)
     source_id = Column(Integer, default=0)
     spent_cpm = Column(Integer, default=0)
+    spent = Column(Integer, default=0)
     click_landing = Column(Integer, default=0)
     spent_cpc_landing = Column(Integer, default=0)
     click_raw = Column(Integer, default=0)
@@ -175,6 +226,50 @@ class StatsAdsTagsCampaignByNodeHour(Base):
     hour = Column(Integer, default=0)
 
 
+class StatsAdsTagsCampaign(Base):
+    __tablename__ = "stats_ads_tags_campaign"
+
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    date = Column(String, default=datetime.today().strftime('%Y%m%d'))
+    campaign_id = Column(Integer, default=0)
+    tag_id = Column(Integer, default=0)
+    paid = Column(Integer, default=0)
+    imp = Column(Integer, default=0)
+    source_id = Column(Integer, default=0)
+    request = Column(Integer, default=0)
+    spent_cpm = Column(Integer, default=0)
+    spent = Column(Integer, default=0)
+    click_landing = Column(Integer, default=0)
+    spent_cpc_landing = Column(Integer, default=0)
+    click_raw = Column(Integer, default=0)
+    click = Column(Integer, default=0)
+    spent_cpc_raw = Column(Integer, default=0)
+    rev_opt = Column(Integer, default=0)
+    rev_real = Column(Integer, default=0)
+
+
+class StatsAdsTagsCampaignSwap(Base):
+    __tablename__ = "stats_ads_tags_campaign_swap"
+
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    date = Column(String, default=datetime.today().strftime('%Y%m%d'))
+    campaign_id = Column(Integer, default=0)
+    tag_id = Column(Integer, default=0)
+    paid = Column(Integer, default=0)
+    imp = Column(Integer, default=0)
+    source_id = Column(Integer, default=0)
+    request = Column(Integer, default=0)
+    spent_cpm = Column(Integer, default=0)
+    spent = Column(Integer, default=0)
+    click_landing = Column(Integer, default=0)
+    spent_cpc_landing = Column(Integer, default=0)
+    click_raw = Column(Integer, default=0)
+    click = Column(Integer, default=0)
+    spent_cpc_raw = Column(Integer, default=0)
+    rev_opt = Column(Integer, default=0)
+    rev_real = Column(Integer, default=0)
+
+
 class StatsAdsTagsDateByNodeHour(Base):
     __tablename__ = "stats_ads_tags_date_by_node_hour"
 
@@ -183,6 +278,7 @@ class StatsAdsTagsDateByNodeHour(Base):
     date = Column(String, default=datetime.today().strftime('%Y%m%d'))
     source_id = Column(Integer, default=0)
     tag_id = Column(Integer, default=0)
+    camp_id = Column(Integer, default=0)
     imp = Column(Integer, default=0)
     spent_cpm = Column(Integer, default=0)
     click_landing = Column(Integer, default=0)
@@ -191,6 +287,9 @@ class StatsAdsTagsDateByNodeHour(Base):
     click = Column(Integer, default=0)
     spent_cpc_raw = Column(Integer, default=0)
     spent = Column(Integer, default=0)
+    rev_opt = Column(Integer, default=0)
+    rev_real = Column(Integer, default=0)
+    conversions = Column(Integer, default=0)
     server_host = Column(String, default='')
     hour = Column(Integer, default=0)
 
@@ -211,6 +310,9 @@ class StatsAdsTagsDate(Base):
     click = Column(Integer, default=0)
     spent_cpc_raw = Column(Integer, default=0)
     spent = Column(Integer, default=0)
+    rev_opt = Column(Integer, default=0)
+    rev_real = Column(Integer, default=0)
+    conversions = Column(Integer, default=0)
 
 
 class StatsAdsTagsDateSwap(Base):
@@ -229,6 +331,9 @@ class StatsAdsTagsDateSwap(Base):
     click = Column(Integer, default=0)
     spent_cpc_raw = Column(Integer, default=0)
     spent = Column(Integer, default=0)
+    rev_opt = Column(Integer, default=0)
+    rev_real = Column(Integer, default=0)
+    conversions = Column(Integer, default=0)
 
 
 class StatsAdsTagsDeviceByNodeHour(Base):
