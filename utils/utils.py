@@ -317,4 +317,4 @@ def start(folder_path, path, list_processing_hour, server_host, list_config, hea
             today = get_current_date_hour()
             list_processing_hour.append(f"{today.hour:02d}")
             do_agg(folder_path, path, today, list_processing_hour, server_host, list_config, header, campaign)
-            time.sleep(120)
+            time.sleep(60)
