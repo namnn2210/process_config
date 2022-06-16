@@ -5,9 +5,22 @@ from utils.utils import get_table_obj, get_current_date_hour
 from loguru import logger
 import pandas as pd
 import time
+import argparse
+from datetime import timedelta
+
+
+def create_args():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('-y', '--yesterday', default=False, action='store_true', help='Yesterday')
+    ap.add_argument('-cd', '--custom_date', help='Custom date', type=str)
+
+    args = ap.parse_args()
+    return args
+
 
 if __name__ == '__main__':
     try:
+        args = create_args()
         while True:
             engine = get_connection()
             Session = sessionmaker(bind=engine)
@@ -15,8 +28,15 @@ if __name__ == '__main__':
 
             for config in REPORT_CONFIG:
                 ct = get_current_date_hour()
-                date = "'{}'".format(ct.date().strftime('%Y-%m-%d'))
+                date = None
+                if args.yesterday:
+                    date = "'{}'".format((ct - timedelta(days=1)).date().strftime('%Y-%m-%d'))
+                if args.custom_date is not None:
+                    date = args.custom_date
+                else:
+                    date = "'{}'".format(ct.date().strftime('%Y-%m-%d'))
                 # date = "'{}'".format('2022-05-31')
+                logger.info(date)
                 sql = config['sql'].format(date=date)
                 indexes = config['index']
                 table_obj = get_table_obj(config['table_name'])
@@ -35,13 +55,14 @@ if __name__ == '__main__':
                             if key in indexes:
                                 continue
                             setattr(exist_obj, key, str(row[key]))
+                            session.commit()
                     else:
                         obj = raw_table_obj()
                         for key in row.keys():
                             setattr(obj, key, str(row[key]))
                         session.add(obj)
                         session.commit()
-                session.close()
-                time.sleep(60)
+            session.close()
+            time.sleep(60)
     except Exception as ex:
         logger.info(str(ex))
