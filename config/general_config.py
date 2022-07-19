@@ -2,8 +2,8 @@ IMPS_CLICK_HEADER = ['ad_id', 'browser', 'campaign_id', 'date2', 'datetime', 'de
 REQUESTS_HEADER = ['browser', 'datetime', 'device1', 'device2', 'kmap', 'location1', 'location2', 'paid', 'random', 'request', 'tag_id', 'time']
 
 # DATABASE CONFIG
-DBUSERNAME = 'root'
-DBPASSWORD = 'chitd'
+DBUSERNAME = 'bidgear'
+DBPASSWORD = 'zN5bY3gSSMH1'
 DBHOST = '192.168.100.153'
 DBPORT = 3306
 DBNAME = 'dsp'

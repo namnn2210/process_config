@@ -274,7 +274,7 @@ def do_agg(folder_path, path, today, list_processing_hour, server_host, list_con
         logger.info('PROCESSING ERROR: %s' % str(ex))
 
 
-def start(folder_path, path, list_processing_hour, server_host, list_config, header, is_last_hour, is_day, is_yesterday,
+def thisstart(folder_path, path, list_processing_hour, server_host, list_config, header, is_last_hour, is_day, is_yesterday,
           is_crontab, custom_date, campaign=False):
     today = None
     if is_last_hour:
